@@ -91,16 +91,16 @@ const Home = () => {
         if(keyword == "" || keyword == undefined){
             return
         } else {
-        let newData = data.filter(function(movie){
-            for(key in movie){
-              if(movie[key].includes(keyword)){
-                return movie;
-                }
-               }
-              });
-        // console.log(newData);
+        let filteredTitle = data.filter((movie) => { 
+            return movie.title.toLowerCase().includes(keyword.toLowerCase())
+            })
+        let filteredDirector = data.filter((movie) => { 
+            return movie.director.toLowerCase().includes(keyword.toLowerCase())
+            })
+        let newData = filteredTitle.concat(filteredDirector)
+
         setData(newData)
-            }
+        }
     },[keyword])
 
     return ( 
@@ -135,7 +135,7 @@ const Home = () => {
                     <option value="Film-Noir">Film-Noir</option>
                     <option value="Sport">Sport</option>
                 </select>
-                <input type="text" placeholder='search by keyword' id='keywordInput'/>
+                <input type="text" placeholder='search for title or director' id='keywordInput'/>
                 <input onClick={searchKeyword} type="submit" value="search" />
             </form>
         </section>

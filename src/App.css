@@ -40,3 +40,7 @@ select {
   margin: 2rem 0 0 0;
   cursor: pointer;
 }
+
+input[type="text"] {
+  width: 20rem;
+}
