@@ -15,21 +15,21 @@ const Home = () => {
 
     // Datum aufsteigend sortieren
     useEffect(() => {
-        let newData = data.sort(function(a, b){return a.year - b.year})
+        let newData = [...data].sort((a, b) => {return a.year - b.year})
         setData(newData)
         setAscendingDate(false)
     },[ascendingDate])
 
     // Datum absteigend sortieren
     useEffect(() => {
-        let newData = data.sort(function(a, b){return b.year - a.year})
+        let newData = [...data].sort((a, b) => {return b.year - a.year})
         setData(newData)
         setDescendingDate(false)
     },[descendingDate])
 
     // A-Z sortieren
     useEffect(() => {
-        let newData = data.sort(function(a, b){
+        let newData = [...data].sort((a, b) => {
             let x = a.title.toLowerCase();
             let y = b.title.toLowerCase();
             if (x < y) {return -1}
@@ -42,7 +42,7 @@ const Home = () => {
 
     // Z-A sortieren
     useEffect(() => {
-        let newData = data.sort(function(a, b){
+        let newData = [...data].sort((a, b) => {
             let x = a.title.toLowerCase();
             let y = b.title.toLowerCase();
             if (y < x) {return -1}
@@ -55,26 +55,19 @@ const Home = () => {
 
     // Beste Bewertung sortieren
     useEffect(() => {
-        let newData = data.sort(function(a, b){return b.rate - a.rate})
+        let newData = [...data].sort((a, b) => {return b.rate - a.rate})
         setData(newData)
         setBestRate(false)
     },[bestRate])
 
-    // nach Genre filtern
-    let key;
-
-    useEffect(() => {
+     // nach Genre filtern
+     useEffect(() => {
         if(genre == "" || genre == undefined){
             return
         } else {
-            let newData = data.filter(function(movie){
-                for(key in movie){
-                  if(movie[key].includes(genre)){
-                    return movie;
-                    }
-                   }
-                  });
-            // console.log(newData);
+            let newData = [...data].filter((movie) => { 
+            return movie.genre.includes(genre)
+            })
             setData(newData)
         }
     },[genre])
@@ -84,21 +77,18 @@ const Home = () => {
         event.preventDefault()
         setData(MovieData);
         setKeyword(document.querySelector("#keywordInput").value)
-        console.log(keyword);
     }
-
     useEffect(() => {
         if(keyword == "" || keyword == undefined){
             return
         } else {
-        let filteredTitle = data.filter((movie) => { 
+        let filteredTitle = [...data].filter((movie) => { 
             return movie.title.toLowerCase().includes(keyword.toLowerCase())
             })
-        let filteredDirector = data.filter((movie) => { 
+        let filteredDirector = [...data].filter((movie) => { 
             return movie.director.toLowerCase().includes(keyword.toLowerCase())
             })
         let newData = filteredTitle.concat(filteredDirector)
-
         setData(newData)
         }
     },[keyword])
@@ -139,11 +129,9 @@ const Home = () => {
                 <input onClick={searchKeyword} type="submit" value="search" />
             </form>
         </section>
-
         <section className='movie-sec'>
             {data.map((movie, index) => {return <MovieItem movie={movie} key={index} />})}
         </section>
-
         </>
      );
 }
